@@ -61,8 +61,24 @@ if (Test-Path $dis) {
   }
 }
 
+# Remove ribbon buttons that pointed at the old macros (now replaced by the POP Tools group). Backed up first.
+$macros = 'Project1\.(RemoveInlineImages_SelectedEmails|StripAttachments_SelectedEmails|StripEverything_SelectedEmails|Stamp_Current_\w+|Retention_\w+)'
+Get-ChildItem (Join-Path $env:LOCALAPPDATA 'Microsoft\Office') -Filter 'olk*.officeUI' -EA SilentlyContinue | ForEach-Object {
+  $x = Get-Content $_.FullName -Raw
+  $y = [regex]::Replace($x, "<mso:button\b[^>]*onAction=""$macros""[^>]*/>", '')
+  $y = [regex]::Replace($y, '<mso:group\b[^>]*>\s*</mso:group>', '')
+  if ($y -ne $x) {
+    if (-not (Test-Path "$($_.FullName).pre-addin.bak")) { Copy-Item $_.FullName "$($_.FullName).pre-addin.bak" }
+    try {
+      $ro = $_.IsReadOnly; $_.IsReadOnly = $false
+      [IO.File]::WriteAllText($_.FullName, $y)
+      $_.IsReadOnly = $ro
+    } catch { Write-Output "Could not clean old buttons in $($_.Name): $_" }
+  }
+}
+
 # Retire the old VBA macros so they don't run twice (kept as a backup, never deleted).
 $otm = Join-Path $env:APPDATA 'Microsoft\Outlook\VbaProject.OTM'
 if ((Test-Path $otm) -and -not (Test-Path "$otm.pre-addin.bak")) { Rename-Item $otm "$otm.pre-addin.bak" }
 
-Say "POP Tools installed ($asm). Open Outlook and look for the 'POP Tools' tab."
+Say "POP Tools installed ($asm). Open Outlook and look for the 'POP Tools' group on the Home tab."
