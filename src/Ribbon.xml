@@ -2,10 +2,18 @@
   <ribbon>
     <tabs>
       <tab idMso="TabMail">
-        <group id="grpPopTools" label="POP Tools">
-          <menu id="mnuRetention" label="Retention Column" size="large" imageMso="DateAndTimeInsert" itemSize="large"
-                screentip="Retention Column"
+        <group id="grpPopTools" label="POP Tools" imageMso="AttachFile">
+          <button id="btnRemoveInline" label="Remove Pictures" size="large" imageMso="PictureReset" onAction="OnAction"
+                  screentip="Remove Pictures (selected emails)"
+                  supertip="Deletes the pictures embedded in the body of the selected emails (logos, screenshots, signatures) to save mailbox space. Regular attachments are kept. Cannot be undone." />
+          <button id="btnStripAttach" label="Remove Attachments" size="large" imageMso="AttachFile" onAction="OnAction"
+                  screentip="Remove Attachments (selected emails)"
+                  supertip="Removes the attached files from the selected emails to save mailbox space. First asks whether to save copies to a folder you choose. Adds a note at the top of each email listing what was removed. Pictures in the body are kept. Cannot be undone." />
+
+          <menu id="mnuRetention" label="More" size="normal" imageMso="DateAndTimeInsert" itemSize="large"
+                screentip="More POP Tools"
                 supertip="Shows how long each email will be kept, in a 'Retention' column you can sort by. These commands only READ each email's existing retention policy and display it. They never change a policy, delete anything, or keep anything longer.">
+            <menuSeparator id="sepRetTop" title="Retention Column" />
             <button id="btnStampFolder" label="Fill In This Folder" imageMso="DateAndTimeInsert" onAction="OnAction"
                     description="Fill the Retention column for the newest 6,000 emails in the folder you're viewing."
                     supertip="Reads the retention policy already on each email in the folder you're viewing (newest 6,000) and writes it into the Retention column, e.g. '6 Mos' or '3 Yrs'. Does not change any policy. Run again to do the next 6,000." />
@@ -23,15 +31,6 @@
                     description="One-time: copies the column layout you're looking at now to every mail folder."
                     supertip="One-time setup: takes the column layout of the folder you're viewing (for example, with the Retention column added) and applies it to every mail folder in this mailbox, as a view named 'Retention View'. Does not change any email." />
           </menu>
-          <button id="btnRemoveInline" label="Remove Pictures" size="large" imageMso="PictureReset" onAction="OnAction"
-                  screentip="Remove Pictures (selected emails)"
-                  supertip="Deletes the pictures embedded in the body of the selected emails (logos, screenshots, signatures) to save mailbox space. Regular attachments are kept. Cannot be undone." />
-          <button id="btnStripAttach" label="Remove Attachments" size="large" imageMso="AttachFile" onAction="OnAction"
-                  screentip="Remove Attachments (selected emails)"
-                  supertip="Removes the attached files from the selected emails to save mailbox space. First asks whether to save copies to a folder you choose. Adds a note at the top of each email listing what was removed. Pictures in the body are kept. Cannot be undone." />
-          <button id="btnStripAll" label="Remove Both" size="large" imageMso="ClearAll" onAction="OnAction"
-                  screentip="Remove Pictures and Attachments (selected emails)"
-                  supertip="Does both: removes the pictures embedded in the body, then the attached files, from the selected emails. Asks first whether to save copies of the attachments. Cannot be undone." />
         </group>
       </tab>
     </tabs>
