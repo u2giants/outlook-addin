@@ -9,28 +9,22 @@
           <button id="btnStripAttach" label="Remove Attachments" size="large" imageMso="AttachFile" onAction="OnAction"
                   screentip="Remove Attachments (selected emails)"
                   supertip="Removes the attached files from the selected emails to save mailbox space. First asks whether to save copies to a folder you choose. Adds a note at the top of each email listing what was removed. Pictures in the body are kept. Cannot be undone." />
-
-          <menu id="mnuRetention" label="More" size="normal" imageMso="DateAndTimeInsert" itemSize="large"
-                screentip="More POP Tools"
-                supertip="Shows how long each email will be kept, in a 'Retention' column you can sort by. These commands only READ each email's existing retention policy and display it. They never change a policy, delete anything, or keep anything longer.">
-            <menuSeparator id="sepRetTop" title="Retention Column" />
-            <button id="btnStampFolder" label="Fill In This Folder" imageMso="DateAndTimeInsert" onAction="OnAction"
-                    description="Fill the Retention column for the newest 6,000 emails in the folder you're viewing."
+        </group>
+      </tab>
+      <tab id="popTab" label="POP Tools">
+        <group id="grpRetention" label="Retention Column">
+          <button id="btnStampFolder" label="Fill In This Folder" size="large" imageMso="DateAndTimeInsert" onAction="OnAction" screentip="Fill In This Folder"
                     supertip="Reads the retention policy already on each email in the folder you're viewing (newest 6,000) and writes it into the Retention column, e.g. '6 Mos' or '3 Yrs'. Does not change any policy. Run again to do the next 6,000." />
-            <button id="btnStampMailbox" label="Fill In Whole Mailbox (6,000)" imageMso="ShowAllFolders" onAction="OnAction"
-                    description="Same, across every folder in this mailbox, up to 6,000 emails per run."
+          <button id="btnStampMailbox" label="Fill In Whole Mailbox (6,000)" size="large" imageMso="ShowAllFolders" onAction="OnAction" screentip="Fill In Whole Mailbox (6,000)"
                     supertip="Same as 'Fill In This Folder', but goes through every folder in the mailbox you're viewing, stopping after 6,000 emails. Does not change any policy." />
-            <button id="btnStampMailboxCustom" label="Fill In Whole Mailbox (choose amount)" imageMso="ShowAllFolders" onAction="OnAction"
-                    description="Same, but you choose how many emails to do in one run."
+          <button id="btnStampMailboxCustom" label="Fill In Whole Mailbox (choose amount)" imageMso="ShowAllFolders" onAction="OnAction" screentip="Fill In Whole Mailbox (choose amount)"
                     supertip="Same as above, but asks how many emails to do in one run. Larger numbers take longer and slow Outlook while running." />
-            <menuSeparator id="sepRet" title="One-time setup" />
-            <button id="btnRegisterField" label="Add Retention Column Field" imageMso="TableColumnsInsertRight" onAction="OnAction"
-                    description="One-time: makes 'Retention' available as a column in every mail folder."
+        </group>
+        <group id="grpRetSetup" label="One-time Setup">
+          <button id="btnRegisterField" label="Add Retention Column Field" imageMso="TableColumnsInsertRight" onAction="OnAction" screentip="Add Retention Column Field"
                     supertip="One-time setup per mailbox: adds 'Retention' to the list of columns you can show in every mail folder. Does not change any email." />
-            <button id="btnApplyView" label="Copy My View to All Folders" imageMso="ViewsModeSelector" onAction="OnAction"
-                    description="One-time: copies the column layout you're looking at now to every mail folder."
+          <button id="btnApplyView" label="Copy My View to All Folders" imageMso="ViewsModeSelector" onAction="OnAction" screentip="Copy My View to All Folders"
                     supertip="One-time setup: takes the column layout of the folder you're viewing (for example, with the Retention column added) and applies it to every mail folder in this mailbox, as a view named 'Retention View'. Does not change any email." />
-          </menu>
         </group>
       </tab>
     </tabs>
