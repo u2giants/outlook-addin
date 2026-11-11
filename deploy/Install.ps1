@@ -11,7 +11,10 @@ $Src    = Split-Path -Parent $MyInvocation.MyCommand.Path
 $AddinKey = "HKCU:\Software\Microsoft\Office\Outlook\Addins\$ProgId"
 $ClsKey   = "HKCU:\Software\Classes\CLSID\$ClsId"
 
-function Say($m) { if (-not $Silent) { Add-Type -AssemblyName System.Windows.Forms; [void][System.Windows.Forms.MessageBox]::Show($m, 'POP Tools') } }
+function Say($m) {
+  if ($Silent -or -not [Environment]::UserInteractive) { Write-Output $m; return }
+  try { Add-Type -AssemblyName System.Windows.Forms; [void][System.Windows.Forms.MessageBox]::Show($m, 'POP Tools') } catch { Write-Output $m }
+}
 
 if (Get-Process OUTLOOK -ErrorAction SilentlyContinue) {
   if ($Silent) { Wait-Process -Name OUTLOOK } else { Say 'Please close Outlook, then click OK.'; Wait-Process -Name OUTLOOK -ErrorAction SilentlyContinue }
@@ -47,6 +50,16 @@ New-ItemProperty $AddinKey LoadBehavior -Value 3 -PropertyType DWord -Force | Ou
 $res = 'HKCU:\Software\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList'
 if (-not (Test-Path $res)) { New-Item -Force $res | Out-Null }
 New-ItemProperty $res $ProgId -Value 1 -PropertyType DWord -Force | Out-Null
+
+# Clear any earlier "disabled" mark so Outlook loads this version.
+$dis = 'HKCU:\Software\Microsoft\Office\16.0\Outlook\Resiliency\DisabledItems'
+if (Test-Path $dis) {
+  $k = Get-Item $dis
+  foreach ($n in $k.GetValueNames()) {
+    $v = $k.GetValue($n)
+    if ($v -is [byte[]] -and [Text.Encoding]::Unicode.GetString($v) -match 'popoutlookaddin') { Remove-ItemProperty $dis $n }
+  }
+}
 
 # Retire the old VBA macros so they don't run twice (kept as a backup, never deleted).
 $otm = Join-Path $env:APPDATA 'Microsoft\Outlook\VbaProject.OTM'
