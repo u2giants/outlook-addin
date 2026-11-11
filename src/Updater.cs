@@ -35,6 +35,7 @@ namespace PopOutlookAddin
 
         internal static void RunPendingUpdate()
         {
+            if (_pending == null) CheckForUpdate(); // also catch versions published while Outlook was open
             if (_pending == null) return;
             var pending = _pending; _pending = null;
             try
