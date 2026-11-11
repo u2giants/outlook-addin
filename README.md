@@ -12,3 +12,5 @@ stamps the Retention column live on new, changed and sent mail.
   it silently after Outlook closes.
 - Log: `%LOCALAPPDATA%\PopOutlookAddin\addin.log`.
 - Classic Outlook only; not "new Outlook", Mac, or web.
+
+For AI sessions and developers: start at [`AGENTS.md`](AGENTS.md); the document index is [`docs/INDEX.md`](docs/INDEX.md).
