@@ -7,13 +7,13 @@ using System.Text.RegularExpressions;
 namespace PopOutlookAddin
 {
     /// <summary>
-    /// Self-update from the shared Dropbox folder: if a newer installer is there, run it silently
+    /// Self-update from the shared Dropbox folder: if a newer add-in DLL is there, install it silently
     /// after Outlook closes. Every PC picks up a new version on its next Outlook restart.
     /// </summary>
     internal static class Updater
     {
         internal const string RelativeFolder = @"ai\outlook-addin";
-        internal const string InstallerName = "PopOutlookAddin-Setup.exe";
+        internal const string PackageDll = "PopOutlookAddin.dll";
         private static string _pending;
 
         internal static void CheckForUpdate()
@@ -22,7 +22,7 @@ namespace PopOutlookAddin
             {
                 foreach (var root in DropboxRoots())
                 {
-                    var setup = Path.Combine(root, RelativeFolder, InstallerName);
+                    var setup = Path.Combine(root, RelativeFolder, PackageDll);
                     if (!File.Exists(setup)) continue;
                     var available = new Version(FileVersionInfo.GetVersionInfo(setup).FileVersion ?? "0.0.0.0");
                     var mine = Assembly.GetExecutingAssembly().GetName().Version;
@@ -36,15 +36,17 @@ namespace PopOutlookAddin
         internal static void RunPendingUpdate()
         {
             if (_pending == null) return;
+            var pending = _pending; _pending = null;
             try
             {
-                // Copy out of Dropbox first so a sync mid-install cannot disturb it.
-                var local = Path.Combine(Path.GetTempPath(), "PopOutlookAddin-Setup-" + Guid.NewGuid().ToString("N") + ".exe");
-                File.Copy(_pending, local);
-                var cmd = "Wait-Process -Name OUTLOOK -ErrorAction SilentlyContinue; Start-Sleep 3; " +
-                          "& '" + local.Replace("'", "''") + "' /VERYSILENT /SUPPRESSMSGBOXES /NORESTART";
+                // Copy the package out of Dropbox first so a sync mid-install cannot disturb it.
+                var src = Path.GetDirectoryName(pending);
+                var tmp = Path.Combine(Path.GetTempPath(), "PopOutlookAddin-" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(tmp);
+                foreach (var f in new[] { "PopOutlookAddin.dll", "Microsoft.Office.Interop.Outlook.dll", "Install.ps1" })
+                    File.Copy(Path.Combine(src, f), Path.Combine(tmp, f));
                 Process.Start(new ProcessStartInfo("powershell.exe",
-                    "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command \"" + cmd + "\"")
+                    "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"" + Path.Combine(tmp, "Install.ps1") + "\" -Silent")
                 { CreateNoWindow = true, UseShellExecute = false });
             }
             catch (Exception ex) { Log.Write("RunPendingUpdate", ex); }

@@ -56,6 +56,8 @@ namespace PopOutlookAddin
             try
             {
                 App.ItemSend += OnItemSend;
+                // Outlook skips OnBeginShutdown on fast shutdown; Quit always fires.
+                ((Outlook.ApplicationEvents_11_Event)App).Quit += Updater.RunPendingUpdate;
                 _explorers = App.Explorers;
                 _explorers.NewExplorer += OnNewExplorer;
                 var exp = App.ActiveExplorer();
