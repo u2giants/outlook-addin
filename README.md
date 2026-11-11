@@ -1,7 +1,7 @@
 # POP Tools for Outlook
 
 Classic Outlook (Windows) COM add-in that replaces the old VBA macros in `legacy-vba/`.
-Adds a **POP Tools** group on the Home tab (Retention stamping, field/view setup, attachment stripping) and
+Adds Remove Pictures and Remove Attachments to a **POP Tools** group on the Home tab, and the Retention commands to a separate **POP Tools** tab, and
 stamps the Retention column live on new, changed and sent mail.
 
 - Build: `dotnet build src -c Release` (works on Linux). Bump the version in `src/PopOutlookAddin.csproj`.
