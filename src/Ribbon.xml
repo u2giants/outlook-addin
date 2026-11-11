@@ -1,0 +1,28 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab id="popTab" label="POP Tools">
+        <group id="grpRetention" label="Retention">
+          <button id="btnStampFolder" label="Stamp This Folder" size="large" imageMso="FilterByFolder" onAction="OnAction"
+                  screentip="Fill the Retention column for up to 6,000 emails in the current folder." />
+          <button id="btnStampMailbox" label="Stamp Mailbox (6,000)" size="large" imageMso="SelectMailbox" onAction="OnAction"
+                  screentip="Fill the Retention column for up to 6,000 emails across this whole mailbox." />
+          <button id="btnStampMailboxCustom" label="Stamp Mailbox (custom)" onAction="OnAction"
+                  screentip="Same as above, but you choose how many emails." />
+          <button id="btnRegisterField" label="Add Retention Field" onAction="OnAction"
+                  screentip="Add the Retention field to every mail folder in this mailbox." />
+          <button id="btnApplyView" label="Copy View to All Folders" onAction="OnAction"
+                  screentip="Copy your current view (with the Retention column) to every mail folder in this mailbox." />
+        </group>
+        <group id="grpAttach" label="Attachments">
+          <button id="btnRemoveInline" label="Remove Inline Images" size="large" imageMso="PictureDelete" onAction="OnAction"
+                  screentip="Remove pictures embedded in the selected emails." />
+          <button id="btnStripAttach" label="Strip Attachments" size="large" imageMso="AttachFile" onAction="OnAction"
+                  screentip="Remove (and optionally save) attachments from the selected emails." />
+          <button id="btnStripAll" label="Strip Everything" size="large" imageMso="Delete" onAction="OnAction"
+                  screentip="Remove inline images, then attachments, from the selected emails." />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
